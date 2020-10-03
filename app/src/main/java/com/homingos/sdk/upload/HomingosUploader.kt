@@ -43,7 +43,8 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
         }
     }
 
-    fun upload(uri: Uri) {
+    fun upload(uri: Uri, apiKey: String) {
+        RetrofitClient.setApiKey(apiKey)
         sdkSessionId = UUID.randomUUID().toString()
         ensureVideoFile(uri)
         generateSignedUrl(uri)

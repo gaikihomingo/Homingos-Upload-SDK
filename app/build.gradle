@@ -10,7 +10,7 @@ static def getAppVersionName() {
     return "1.0.0"
 }
 
-group = 'com.github.tapandesai'
+group = 'com.homingos.sdk'
 version = getAppVersionName()
 
 android {
@@ -30,12 +30,10 @@ android {
         debug {
             buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/v2/user/post/getPostSignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
-            buildConfigField "String", "AUTH", "\"5e6eb94e-6ac6-4f61-84af-c764c4c8d27e\""
         }
         release {
             buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/v2/user/post/getPostSignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
-            buildConfigField "String", "AUTH", "\"5e6eb94e-6ac6-4f61-84af-c764c4c8d27e\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

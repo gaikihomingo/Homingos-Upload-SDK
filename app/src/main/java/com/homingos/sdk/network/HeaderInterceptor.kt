@@ -4,7 +4,7 @@ import com.homingos.sdk.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HeaderInterceptor : Interceptor {
+class HeaderInterceptor (private val apiKey: String) : Interceptor {
 
     companion object {
         private const val AUTH_HEADER_KEY = "Authorization"
@@ -15,7 +15,7 @@ class HeaderInterceptor : Interceptor {
         val requestBuilder = request.newBuilder()
         if (!request.url().toString().contains("amazonaws", true)) {
             //add auth header to homingos.com api request
-            requestBuilder.header(AUTH_HEADER_KEY, BuildConfig.AUTH)
+            requestBuilder.header(AUTH_HEADER_KEY, apiKey)
         }
         return chain.proceed(requestBuilder.build())
     }

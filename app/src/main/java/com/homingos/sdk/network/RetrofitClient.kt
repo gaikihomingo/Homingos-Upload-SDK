@@ -12,6 +12,8 @@ internal class RetrofitClient private constructor() {
 
         private var apiService: HomingosApiService? = null
 
+        private var apiKey: String = ""
+
         /**
          * @return - Instance of [HomingosApiService]
          */
@@ -20,6 +22,10 @@ internal class RetrofitClient private constructor() {
                 apiService = getInstance().create(HomingosApiService::class.java)
             }
             return apiService!!
+        }
+
+        fun setApiKey(apiKey: String) {
+            this.apiKey = apiKey
         }
 
         /**
@@ -41,7 +47,7 @@ internal class RetrofitClient private constructor() {
          */
         private fun getClient(): OkHttpClient {
             return OkHttpClient.Builder()
-                .addInterceptor(HeaderInterceptor())
+                .addInterceptor(HeaderInterceptor(apiKey))
                 .build()
         }
     }
