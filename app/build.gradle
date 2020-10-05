@@ -28,11 +28,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/v2/user/post/getPostSignedUrl/\""
+            buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/promoter/resource/getS3SignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
         }
         release {
-            buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/v2/user/post/getPostSignedUrl/\""
+            buildConfigField "String", "UPLOAD_URL", "\"https://api.homingos.com/ultron/promoter/resource/getS3SignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
