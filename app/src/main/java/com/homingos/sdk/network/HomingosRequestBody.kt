@@ -6,6 +6,7 @@ import okio.BufferedSink
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import kotlin.jvm.Throws
 
 internal class HomingosRequestBody(
     private val file: File,

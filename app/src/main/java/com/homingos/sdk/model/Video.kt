@@ -29,6 +29,10 @@ internal data class VideoRSData(
 internal data class VideoPRQ(
     @SerializedName("filename")
     val filename: String,
+    @SerializedName("bucketName")
+    val bucketName: String,
+    @SerializedName("prefix")
+    val prefix: String,
     @SerializedName("deviceName")
     val deviceName: String,
     @SerializedName("deviceType")

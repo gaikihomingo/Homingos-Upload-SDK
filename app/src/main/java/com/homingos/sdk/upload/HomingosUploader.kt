@@ -84,6 +84,8 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
             getUploadUrl(context),
             VideoPRQ(
                 file.name,
+                BuildConfig.BUCKET_NAME,
+                BuildConfig.PREFIX,
                 Build.MANUFACTURER,
                 Build.TYPE,
                 Build.VERSION.CODENAME,
