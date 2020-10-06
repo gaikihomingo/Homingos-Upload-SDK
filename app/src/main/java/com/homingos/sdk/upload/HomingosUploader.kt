@@ -14,6 +14,8 @@ import com.homingos.sdk.model.VideoRS
 import com.homingos.sdk.network.HomingosRequestBody
 import com.homingos.sdk.network.RetrofitClient
 import com.homingos.sdk.network.UploadProgressListener
+import com.homingos.sdk.utils.getBucketName
+import com.homingos.sdk.utils.getPrefix
 import com.homingos.sdk.utils.getRedirectionUrl
 import com.homingos.sdk.utils.getUploadUrl
 import retrofit2.Call
@@ -84,8 +86,8 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
             getUploadUrl(context),
             VideoPRQ(
                 file.name,
-                BuildConfig.BUCKET_NAME,
-                BuildConfig.PREFIX,
+                getBucketName(context),
+                getPrefix(context),
                 Build.MANUFACTURER,
                 Build.TYPE,
                 Build.VERSION.CODENAME,
