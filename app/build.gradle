@@ -30,10 +30,14 @@ android {
         debug {
             buildConfigField "String", "UPLOAD_URL", "\"https://dev.homingos.com/homingo/promoter/resource/getS3SignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
+            buildConfigField "String", "BUCKET_NAME", "\"homingos-magik\""
+            buildConfigField "String", "PREFIX", "\"vibo/dev/base\""
         }
         release {
             buildConfigField "String", "UPLOAD_URL", "\"https://api.homingos.com/ultron/promoter/resource/getS3SignedUrl/\""
             buildConfigField "String", "BASE_REDIRECTION_URL", "\"https://orderdetails.homingos.com\""
+            buildConfigField "String", "BUCKET_NAME", "\"homingos-magik\""
+            buildConfigField "String", "PREFIX", "\"vibo/prod/base\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
