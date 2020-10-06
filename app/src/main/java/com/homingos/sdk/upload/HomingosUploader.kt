@@ -8,13 +8,14 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
-import com.homingos.sdk.BuildConfig
 import com.homingos.sdk.browser.BrowserActivity
 import com.homingos.sdk.model.VideoPRQ
 import com.homingos.sdk.model.VideoRS
 import com.homingos.sdk.network.HomingosRequestBody
 import com.homingos.sdk.network.RetrofitClient
 import com.homingos.sdk.network.UploadProgressListener
+import com.homingos.sdk.utils.getRedirectionUrl
+import com.homingos.sdk.utils.getUploadUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,7 +81,7 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
         val memory = memoryInfo.availMem.toString()
 
         getUrlCall = apiService.getSignedUrl(
-            BuildConfig.UPLOAD_URL,
+            getUploadUrl(context),
             VideoPRQ(
                 file.name,
                 Build.MANUFACTURER,
@@ -133,7 +134,7 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
     private fun redirectToWebPage() {
         val intent = Intent(context, BrowserActivity::class.java)
 
-        val url = Uri.parse(BuildConfig.BASE_REDIRECTION_URL)
+        val url = Uri.parse(getRedirectionUrl(context))
             .buildUpon()
             .appendQueryParameter("videoUrl", ResponseHolder.response?.videoData?.resourceUrl)
             .appendQueryParameter("source", context.packageName)
