@@ -35,6 +35,7 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
     private val apiService by lazy { RetrofitClient.getApiService() }
 
     private var sdkSessionId = ""
+    private var isDebugMode = false
     private val appSessionId by lazy { UUID.randomUUID().toString() }
 
     companion object {
@@ -46,7 +47,8 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
         }
     }
 
-    fun upload(uri: Uri, apiKey: String) {
+    fun upload(uri: Uri, apiKey: String, isDebugMode: Boolean = false) {
+        this.isDebugMode = isDebugMode
         RetrofitClient.setApiKey(apiKey)
         sdkSessionId = UUID.randomUUID().toString()
         ensureVideoFile(uri)
@@ -83,11 +85,11 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
         val memory = memoryInfo.availMem.toString()
 
         getUrlCall = apiService.getSignedUrl(
-            getUploadUrl(context),
+            getUploadUrl(isDebugMode),
             VideoPRQ(
                 file.name,
-                getBucketName(context),
-                getPrefix(context),
+                getBucketName(isDebugMode),
+                getPrefix(isDebugMode),
                 Build.MANUFACTURER,
                 Build.TYPE,
                 Build.VERSION.CODENAME,
@@ -138,7 +140,7 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
     private fun redirectToWebPage() {
         val intent = Intent(context, BrowserActivity::class.java)
 
-        val url = Uri.parse(getRedirectionUrl(context))
+        val url = Uri.parse(getRedirectionUrl(isDebugMode))
             .buildUpon()
             .appendQueryParameter("videoUrl", ResponseHolder.response?.videoData?.resourceUrl)
             .appendQueryParameter("source", context.packageName)
