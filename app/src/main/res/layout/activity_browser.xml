@@ -19,6 +19,7 @@
                 android:background="@drawable/bg_header"
                 app:theme="@style/ToolbarTheme"
                 tools:navigationIcon="@drawable/ic_close"
+                tools:titleTextColor="#ffffff"
                 tools:subtitle="Test subtitle"
                 tools:title="Test Title" />
 
