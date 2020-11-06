@@ -42,7 +42,7 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
         private var uploader: HomingosUploader? = null
 
         fun getInstance(context: Context): HomingosUploader {
-            if (uploader == null) uploader = HomingosUploader(context)
+            uploader = HomingosUploader(context)
             return uploader!!
         }
     }
