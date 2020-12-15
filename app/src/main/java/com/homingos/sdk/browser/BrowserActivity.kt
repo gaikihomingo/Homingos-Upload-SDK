@@ -3,10 +3,15 @@ package com.homingos.sdk.browser
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.homingos.sdk.R
+import org.greenrobot.eventbus.EventBus
 
 internal class BrowserActivity : AppCompatActivity() {
 
@@ -36,6 +41,7 @@ internal class BrowserActivity : AppCompatActivity() {
     private fun init() {
         extractDataFromIntent()
         setupToolbar()
+        addWebView()
         loadWebPage()
     }
 
@@ -57,9 +63,28 @@ internal class BrowserActivity : AppCompatActivity() {
         }
     }
 
+    private fun addWebView() {
+        val webView = WebView(this.applicationContext)
+        webView.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        this.webView = webView
+        val container = findViewById<FrameLayout>(R.id.webViewContainer)
+        container.addView(webView)
+
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldInterceptRequest(
+                view: WebView,
+                url: String
+            ): WebResourceResponse? {
+                EventBus.getDefault().postSticky(UrlCalled(url))
+                return super.shouldInterceptRequest(view, url)
+            }
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadWebPage() {
-        webView = findViewById(R.id.webView)
         webView.settings.apply {
             javaScriptEnabled = true
             displayZoomControls = false
@@ -71,3 +96,5 @@ internal class BrowserActivity : AppCompatActivity() {
     }
 
 }
+
+data class UrlCalled(val url: String)

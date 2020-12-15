@@ -9,15 +9,20 @@ import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
 import com.homingos.sdk.browser.BrowserActivity
+import com.homingos.sdk.browser.UrlCalled
 import com.homingos.sdk.model.VideoPRQ
 import com.homingos.sdk.model.VideoRS
 import com.homingos.sdk.network.HomingosRequestBody
 import com.homingos.sdk.network.RetrofitClient
 import com.homingos.sdk.network.UploadProgressListener
+import com.homingos.sdk.network.UrlListener
 import com.homingos.sdk.utils.getBucketName
 import com.homingos.sdk.utils.getPrefix
 import com.homingos.sdk.utils.getRedirectionUrl
 import com.homingos.sdk.utils.getUploadUrl
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,17 +43,31 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
     private var isDebugMode = false
     private val appSessionId by lazy { UUID.randomUUID().toString() }
 
+    private var progressListener: UploadProgressListener? = null
+    private var urlListener: UrlListener? = null
+
     companion object {
         private var uploader: HomingosUploader? = null
 
+        @JvmStatic
         fun getInstance(context: Context): HomingosUploader {
             uploader = HomingosUploader(context)
             return uploader!!
         }
     }
 
-    fun upload(uri: Uri, apiKey: String, isDebugMode: Boolean = false) {
+    fun upload(
+        uri: Uri, apiKey: String, isDebugMode: Boolean = false,
+        listener: UploadProgressListener? = null, urlListener: UrlListener? = null
+    ) {
+        try {
+            EventBus.getDefault().register(this)
+        } catch (e: Exception) {
+            //ignore
+        }
         this.isDebugMode = isDebugMode
+        this.progressListener = listener
+        this.urlListener = urlListener
         RetrofitClient.setApiKey(apiKey)
         sdkSessionId = UUID.randomUUID().toString()
         ensureVideoFile(uri)
@@ -175,7 +194,14 @@ class HomingosUploader private constructor(private val context: Context) : Uploa
     }
 
     override fun onProgressUpdate(percentage: Int) {
+        progressListener?.onProgressUpdate(percentage)
         uploadDialog?.setProgress(percentage)
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onUrlCalled(url: UrlCalled) {
+        EventBus.getDefault().removeStickyEvent(UrlCalled::class.java)
+        urlListener?.onUrlChanged(url.url)
     }
 
 }

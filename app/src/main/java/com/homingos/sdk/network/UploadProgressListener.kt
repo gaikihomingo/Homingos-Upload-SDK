@@ -1,6 +1,6 @@
 package com.homingos.sdk.network
 
-internal interface UploadProgressListener {
+interface UploadProgressListener {
 
     fun onProgressUpdate(percentage: Int)
 
